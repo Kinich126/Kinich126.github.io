@@ -1,0 +1,14 @@
+[
+    {
+        "audioLink": "https://cloud.wujiyan.cc/f/Mx6So/Once%20Upon%20A%20Time%20%28House%20Extended%20Mix%29%20-%20Max%20Oazo%E3%80%81Moonessa.flac",
+        "albumImageLink": "https://example.com/album1.jpg",
+        "name": "Song Name 1",
+        "artistName": "Artist Name 1"
+    },
+    {
+        "audioLink": "https://example.com/song2.mp3",
+        "albumImageLink": "https://example.com/album2.jpg",
+        "name": "Song Name 2",
+        "artistName": "Artist Name 2"
+    }
+]

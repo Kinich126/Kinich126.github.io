@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Player with JSON Data</title>
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+    #playerContainer {
+        width: 50%;
+        height: 100%;
+        float: right;
+        background: #f0f0f0;
+    }
+    #playlistContainer {
+        width: 50%;
+        height: 100%;
+        float: left;
+        overflow-y: auto;
+        background: #ddd;
+    }
+    .song {
+        padding: 10px;
+        border-bottom: 1px solid #bbb;
+        cursor: pointer;
+    }
+    .song:hover {
+        background-color: #ccc;
+    }
+    .selected {
+        background-color: #bbb;
+    }
+    audio {
+        width: 100%;
+    }
+</style>
+</head>
+<body>
+
+<div id="playlistContainer">
+    <!-- 歌曲列表将在这里动态生成 -->
+</div>
+
+<div id="playerContainer">
+    <audio id="audioPlayer" controls>
+        <source src="" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <input type="text" id="searchBox" placeholder="Search songs..." oninput="searchSongs(this.value)">
+</div>
+
+<script>
+// 假设 JSON 文件位于同一目录下
+var jsonFilePath = 'ml.json';
+
+// 使用 fetch API 加载 JSON 数据
+fetch(jsonFilePath)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        updatePlaylist(data);
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation: ', error);
+    });
+
+function searchSongs(query) {
+    var searchQuery = query.toLowerCase();
+    var filteredSongs = data.filter(function(song) {
+        return song.name.toLowerCase().includes(searchQuery);
+    });
+    updatePlaylist(filteredSongs);
+}
+
+function updatePlaylist(songs) {
+    var playlistContainer = document.getElementById('playlistContainer');
+    playlistContainer.innerHTML = ''; // 清空列表
+    songs.forEach(function(song) {
+        var songElement = document.createElement('div');
+        songElement.classList.add('song');
+        songElement.textContent = song.name + ' - ' + song.artistName;
+        songElement.onclick = function() {
+            document.getElementById('audioPlayer').src = song.audioLink;
+            document.getElementById('audioPlayer').load();
+            document.getElementById('audioPlayer').play();
+            playlistContainer.querySelectorAll('.song').forEach(function(song) {
+                song.classList.remove('selected');
+            });
+            songElement.classList.add('selected');
+        };
+        playlistContainer.appendChild(songElement);
+    });
+}
+
+// 初始化播放列表
+// 注意：由于 fetch 是异步的，我们需要等待数据加载完成后再初始化播放列表
+// 这里我们假设数据已经加载完成，实际上应该在数据加载完成后调用 updatePlaylist
+</script>
+</body>
+</html>
